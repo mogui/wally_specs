@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+EXPECTED_ARGS=1
+if [ $# -ne $EXPECTED_ARGS ]
+then
+  echo "Usage: `basename $0` { directory to scan for sources }"
+  exit 666
+fi
+
+find $1 -iname '*.m' | xargs genstrings -o ./ 

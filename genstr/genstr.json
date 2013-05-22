@@ -1,0 +1,6 @@
+{
+    "exec": "bash", 
+    "type": "script", 
+    "description": "Wrapper around genstrings scommand line tool. This script will create a Localizable.strings file for all the *.m files found in the given directory", 
+    "author": "author"
+}
