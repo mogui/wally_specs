@@ -1,0 +1,6 @@
+{
+    "exec": "bash", 
+    "type": "script", 
+    "description": "quick compile small bits of assembly passed through command line", 
+    "author": "mogui"
+}
