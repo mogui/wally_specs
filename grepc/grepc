@@ -1,0 +1,4 @@
+#!/bin/bash
+echo -- $1 --
+grep -A2 -B2 -niR $1 ./ --color=always | grep -v svn
+

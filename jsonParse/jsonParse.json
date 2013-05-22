@@ -1,0 +1,6 @@
+{
+    "exec": "/usr/local/bin/node", 
+    "type": "script", 
+    "description": "extracts values from a json output.\nWorkswith STDIN.\nYou have to pass a keypath\nkeyPath is in form of key.0.otherkey\nspecial key is count key.count returns number of elemts in that key", 
+    "author": "mogui247"
+}

@@ -1,0 +1,89 @@
+#!/usr/bin/env node
+
+/*
+ * Copyright (c) 2011 Niko Usai <mogui83@gmail.com> http://mogui.it
+ * 
+ * This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://sam.zoy.org/wtfpl/COPYING for more details. 
+ *
+ */
+
+
+/*
+ * keyPath is in form of key.0.otherkey
+ * special key is count key.count returns number of elemts in that key
+ */
+
+var args = process.argv.splice(2);
+var fs = require('fs');
+var path = require('path');
+var util = require('util');
+
+var usage = function(){
+    var tmp = process.argv[1].split("/")
+    var scriptName = tmp[tmp.length-1];
+
+    console.log("\nExtracts a value from a json specified by a keyPath.");
+    console.log("A keyPath is a string of key and array index concatenated by a dot.");
+    console.log("ie. "+scriptName+" longlist.3.name (extact the value of the key name of the 3rd element of the array value of longlist key)");
+    console.log("\nusage: "+scriptName+" [filename] keyPath");
+    console.log("\nINFO:");
+    console.log("\tfilename is optional and is a well formed json file");
+    console.log("\tif not presente script will read from STDIN so it is usable for piping input ");
+    console.log("\tcount is a special key in a keyPath returns the number of elements in a key");
+    console.log("\tie. "+scriptName+" longlist.count -> 5");
+}
+
+
+var keyPath = null;
+var value = null;
+var data = "";
+
+if (args.length < 1){
+    usage();
+    process.exit();
+} else if(args.length == 1){
+    if (args[0] == "help" || args[0] == "--help" || args[0] == "-h"){
+        usage();
+        process.exit(status=0);
+    }
+    data = fs.readFileSync('/dev/stdin').toString();
+    keyPath = args[0];
+} else {
+    keyPath = args[1];
+    try {
+        data = fs.readFileSync(args[0]);
+    } catch (e){
+        process.exit(status=1);
+    }
+}
+
+var keyArr = keyPath.split(".");
+
+
+var config = JSON.parse(data);
+var regex = /[0-9]+/
+for (var i=0; i < keyArr.length; i++){
+    var key = keyArr[i];
+    if (key=="count") {
+        console.log(value.length);
+        process.exit();
+    } else if(regex.test(key)){
+        key = parseInt(key);
+    }
+    if (value != null){
+        value = value[key];
+    } else {
+        value = config[key];
+    }
+}
+
+if(typeof(value) == 'object'){
+    value = JSON.stringify(value);
+}
+
+console.log(value);
+process.exit(status=0);

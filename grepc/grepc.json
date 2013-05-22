@@ -1,0 +1,5 @@
+{
+  "type": "script",
+  "exec": "bash",
+  "description": "grep optimized for searching in source code"
+}
